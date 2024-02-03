@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceCompanyTaskManager.Api", "ServiceCompanyTaskManager.Api\ServiceCompanyTaskManager.Api.csproj", "{2DF1C1DC-5C70-4F20-95FA-73578EABA87C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceCompanyTaskManager.Common.Models", "ServiceCompanyTaskManager.Common.Models\ServiceCompanyTaskManager.Common.Models.csproj", "{9F2C9376-B35B-4318-9D8D-F1B12D5016F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DF1C1DC-5C70-4F20-95FA-73578EABA87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF1C1DC-5C70-4F20-95FA-73578EABA87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF1C1DC-5C70-4F20-95FA-73578EABA87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF1C1DC-5C70-4F20-95FA-73578EABA87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F2C9376-B35B-4318-9D8D-F1B12D5016F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2C9376-B35B-4318-9D8D-F1B12D5016F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2C9376-B35B-4318-9D8D-F1B12D5016F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2C9376-B35B-4318-9D8D-F1B12D5016F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2CAA6A5A-5C64-43B6-A2AC-59900DA4D6B8}
+	EndGlobalSection
+EndGlobal
