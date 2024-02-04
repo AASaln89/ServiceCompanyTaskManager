@@ -1,4 +1,5 @@
-﻿using ServiceCompanyTaskManager.Common.Models.Entities;
+﻿using ServiceCompanyTaskManager.Common.Models;
+using ServiceCompanyTaskManager.Common.Models.Entities;
 
 namespace ServiceCompanyTaskManager.Api.Models.BaseModels
 {
@@ -21,6 +22,23 @@ namespace ServiceCompanyTaskManager.Api.Models.BaseModels
         public BaseEntity()
         {
             RegistrationDate = DateTime.Now;
+        }
+
+        public BaseEntity(BaseEntityModel model)
+        {
+            Id = model.Id;
+
+            UUID = model.UUID;
+
+            Name = model.Name;
+
+            ShortName = model.ShortName;
+
+            Description = model.Description;
+
+            RegistrationDate = model.RegistrationDate;
+
+            Avatar = model.Avatar;
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ServiceCompanyTaskManager.Api.Services
 {
-    public class UserService : IBaseService<UserModel>
+    public class UserService : BaseSevice, IBaseService<UserModel>
     {
         private readonly ServiceCompanyDbContext _dbContext;
 
@@ -20,7 +20,12 @@ namespace ServiceCompanyTaskManager.Api.Services
 
         public User GetUser(string login, string password)
         {
-            return _dbContext.Users.SingleOrDefault(u =>u.Email == login && u.Password == password);
+            return _dbContext.Users.SingleOrDefault(u => u.Email == login && u.Password == password);
+        }
+
+        public User GetUser(string login)
+        {
+            return _dbContext.Users.SingleOrDefault(u => u.Email == login);
         }
 
         public Tuple<string, string> GetLoginPassByBaseAuth(HttpRequest request)
@@ -28,7 +33,7 @@ namespace ServiceCompanyTaskManager.Api.Services
             string login = string.Empty;
             string password = string.Empty;
             string authHeader = request.Headers["Authorization"].ToString();
-            
+
             if (authHeader != null && authHeader.StartsWith("Basic"))
             {
                 string encocdedLogInfo = authHeader.Replace("Basic", "");
@@ -69,61 +74,77 @@ namespace ServiceCompanyTaskManager.Api.Services
             return null;
         }
 
-        public void Create(UserModel userModel)
+        public UserModel Get(int id)
         {
-            var user = new User(userModel.ShortName, userModel.Email, userModel.Password,
-                    userModel.FirstName, userModel.LastName, Permission.SuperAdmin,
-                    Status.Active, userModel.Avatar, userModel.PhoneNumber);
-
-            _dbContext.Users.Add(user);
-
-            _dbContext.SaveChanges();
+            return _dbContext.Users?.SingleOrDefault(p => p.Id == id)?.ToDto();
         }
 
-        public void Update(int id, UserModel userModel)
+        public bool Create(UserModel model)
+        {
+            return UserAction(delegate ()
+            {
+                var user = new User(model);
+
+                _dbContext.Users.Add(user);
+
+                _dbContext.SaveChanges();
+            });
+        }
+
+        public bool Update(int id, UserModel userModel)
         {
             var user = _dbContext.Users.SingleOrDefault(u => u.Id == id);
 
             if (user != null)
             {
-                user.FirstName = userModel.FirstName;
-                user.LastName = userModel.LastName;
-                user.Avatar = userModel.Avatar;
-                user.PhoneNumber = userModel.PhoneNumber;
-                user.Email = userModel.Email;
-                user.Status = userModel.Status;
-                user.Password = userModel.Password;
-                user.Permission = userModel.Permission;
-                user.Description = userModel.Description;
-                user.ExpireDate = userModel.ExpireDate;
-                user.ShortName = userModel.ShortName;
+                return UserAction(delegate ()
+                {
+                    user.FirstName = userModel.FirstName;
+                    user.LastName = userModel.LastName;
+                    user.Avatar = userModel.Avatar;
+                    user.PhoneNumber = userModel.PhoneNumber;
+                    user.Email = userModel.Email;
+                    user.Status = userModel.Status;
+                    user.Password = userModel.Password;
+                    user.Permission = userModel.Permission;
+                    user.Description = userModel.Description;
+                    user.ExpireDate = userModel.ExpireDate;
+                    user.ShortName = userModel.ShortName;
 
-                _dbContext.SaveChanges();
+                    _dbContext.SaveChanges();
+                });
             }
+            return false;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             var user = _dbContext.Users.SingleOrDefault(u => u.Id == id);
 
             if (user != null)
             {
-                _dbContext.Users.Remove(user);
+                return UserAction(delegate ()
+                {
+                    _dbContext.Users.Remove(user);
 
-                _dbContext.SaveChanges();
+                    _dbContext.SaveChanges();
+
+                    _dbContext.SaveChangesAsync();
+                });
             }
+            return false;
         }
 
-        public void AddMultipleUsersAsync(List<UserModel> userModels)
+        public bool CreateMultipleUsersAsync(List<UserModel> userModels)
         {
-            if (userModels != null && userModels.Count > 0)
+
+            return UserAction(delegate ()
             {
                 var users = userModels.Select(um => new User(um)).ToList();
-
                 _dbContext.Users.AddRange(users);
 
                 _dbContext.SaveChangesAsync();
-            }
+            });
         }
     }
 }

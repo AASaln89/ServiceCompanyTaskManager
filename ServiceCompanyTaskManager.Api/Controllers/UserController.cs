@@ -31,23 +31,35 @@ namespace ServiceCompanyTaskManager.Api.Controllers
             return Ok("test");
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var user = _userService.Get(id);
+
+            return user != null ? Ok(user) : NotFound();
+        }
+
         [HttpPost("add")]
-        public IActionResult AddUser([FromBody] UserModel userModel)
+        public IActionResult CreateUser([FromBody] UserModel userModel)
         {
             if (userModel != null)
             {
-                _userService.Create(userModel);
+                var result = _userService.Create(userModel);
 
-                return Ok();
+                return result ? Ok() : NotFound();
             }
             return BadRequest();
         }
 
         [HttpPost("add/all")]
-        public async Task<IActionResult> AddMultipleUsersAsync([FromBody] List<UserModel> userModels)
+        public async Task<IActionResult> CreateMultipleUsersAsync([FromBody] List<UserModel> userModels)
         {
-            _userService.AddMultipleUsersAsync(userModels);
-            return Ok();
+            if (userModels != null && userModels.Count > 0)
+            {
+                var result = _userService.CreateMultipleUsersAsync(userModels);
+                return result ? Ok() : NotFound();
+            }
+            return BadRequest();
         }
 
         [HttpPatch("update/{id}")]
@@ -55,9 +67,9 @@ namespace ServiceCompanyTaskManager.Api.Controllers
         {
             if (userModel != null)
             {
-                _userService.Update(id, userModel);
+                var result = _userService.Update(id, userModel);
 
-                return Ok();
+                return result ? Ok() : NotFound();
             }
             return BadRequest();
         }
@@ -65,9 +77,9 @@ namespace ServiceCompanyTaskManager.Api.Controllers
         [HttpDelete("delete/{id}")]
         public IActionResult DeleteUser(int id)
         {
-            _userService?.Delete(id);
+            var result = _userService.Delete(id);
 
-            return Ok();
+            return result ? Ok() : NotFound();
         }
 
         [HttpGet]
